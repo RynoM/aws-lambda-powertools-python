@@ -307,7 +307,7 @@ Here is an example implementation using S3 as a custom parameter store:
 ```python hl_lines="3 6 17 27" title="Creating a S3 Provider to fetch parameters"
 import copy
 
-from aws_lambda_powertools.utilities import BaseProvider
+from aws_lambda_powertools.utilities.parameters import BaseProvider
 import boto3
 
 class S3Provider(BaseProvider):
@@ -320,6 +320,7 @@ class S3Provider(BaseProvider):
 
 		self.bucket_name = bucket_name
 		self.client = boto3.client("s3")
+		super().__init__()
 
 	def _get(self, name: str, **sdk_options) -> str:
 		# Retrieve a single value
@@ -329,7 +330,7 @@ class S3Provider(BaseProvider):
 		sdk_options["Key"] = name
 
 		response = self.client.get_object(**sdk_options)
-		return
+		return response
 
 	def _get_multiple(self, path: str, **sdk_options) -> Dict[str, str]:
 		# Retrieve multiple values
