@@ -3,7 +3,7 @@ from typing import Dict
 
 import boto3
 
-from aws_lambda_powertools.utilities import BaseProvider
+from aws_lambda_powertools.utilities.parameters import BaseProvider
 
 
 class S3Provider(BaseProvider):
@@ -14,6 +14,7 @@ class S3Provider(BaseProvider):
         # Initialize the client to your custom parameter store
         # E.g.:
 
+        super().__init__()
         self.bucket_name = bucket_name
         self.client = boto3.client("s3")
 
@@ -25,7 +26,7 @@ class S3Provider(BaseProvider):
         sdk_options["Key"] = name
 
         response = self.client.get_object(**sdk_options)
-        return
+        return response
 
     def _get_multiple(self, path: str, **sdk_options) -> Dict[str, str]:
         # Retrieve multiple values
